@@ -1,0 +1,33 @@
+package com.Ravi.LocationWeb.Util;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ReportUtilImpl implements IReportUtil {
+
+	@Override
+	public void reportGenerate(String title,List<Object[]> data,File file) {
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		for (Object[] objects : data) {
+			dataset.setValue(objects[0].toString(), (Number) objects[1]);
+		}
+		JFreeChart chart = ChartFactory.createPieChart3D(title,  dataset, true, true, false);
+		
+	    try {
+			ChartUtilities.saveChartAsJPEG(file, chart, 300, 300);
+			System.out.println("Chart saved");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
